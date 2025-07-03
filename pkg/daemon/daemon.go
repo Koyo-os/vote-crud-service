@@ -127,7 +127,7 @@ func (d *Daemon) Delete(id string) error {
 	return nil
 }
 
-func (d *Daemon) VotesByPollID(ctx context.Context, pollID uuid.UUID) chan entity.Vote {
+func (d *Daemon) GetByPollID(ctx context.Context, pollID uuid.UUID) chan entity.Vote {
 	voteChan := make(chan entity.Vote, ChannelSize)
 
 	go func() {
