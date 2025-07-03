@@ -73,7 +73,7 @@ func (r *Repository) Delete(id string) error {
 	return nil
 }
 
-func (r *Repository) GetMore(key string, value interface{}) ([]entity.Vote, error) {
+func (r *Repository) GetBy(key string, value interface{}) ([]entity.Vote, error) {
 	var Votes []entity.Vote
 	query := fmt.Sprintf("%s = ?", key)
 	if err := r.db.Where(query, value).Find(&Votes).Error; err != nil {
