@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type Repository struct{
-	db *gorm.DB
+type Repository struct {
+	db     *gorm.DB
 	logger *logger.Logger
 }
 
@@ -45,7 +45,7 @@ func (r *Repository) Get(id string) (*entity.Vote, error) {
 
 		return nil, err
 	}
-	
+
 	return &Vote, nil
 }
 
@@ -79,7 +79,7 @@ func (r *Repository) GetMore(key string, value interface{}) ([]entity.Vote, erro
 	if err := r.db.Where(query, value).Find(&Votes).Error; err != nil {
 		r.logger.Error("failed to get Votes by",
 			zap.String("key", key))
-			
+
 		return nil, err
 	}
 	return Votes, nil
