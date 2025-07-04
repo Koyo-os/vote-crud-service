@@ -19,17 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	VoteService_Get_FullMethodName    = "/VoteService/Get"
-	VoteService_Update_FullMethodName = "/VoteService/Update"
-	VoteService_Delete_FullMethodName = "/VoteService/Delete"
-	VoteService_Create_FullMethodName = "/VoteService/Create"
+	VoteService_GetByPollID_FullMethodName = "/VoteService/GetByPollID"
+	VoteService_Update_FullMethodName      = "/VoteService/Update"
+	VoteService_Delete_FullMethodName      = "/VoteService/Delete"
+	VoteService_Create_FullMethodName      = "/VoteService/Create"
 )
 
 // VoteServiceClient is the client API for VoteService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VoteServiceClient interface {
-	Get(ctx context.Context, in *RequestGet, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Vote], error)
+	GetByPollID(ctx context.Context, in *RequestGet, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Vote], error)
 	Update(ctx context.Context, in *RequestUpdate, opts ...grpc.CallOption) (*Response, error)
 	Delete(ctx context.Context, in *RequestDelete, opts ...grpc.CallOption) (*Response, error)
 	Create(ctx context.Context, in *RequestCreate, opts ...grpc.CallOption) (*Response, error)
@@ -43,9 +43,9 @@ func NewVoteServiceClient(cc grpc.ClientConnInterface) VoteServiceClient {
 	return &voteServiceClient{cc}
 }
 
-func (c *voteServiceClient) Get(ctx context.Context, in *RequestGet, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Vote], error) {
+func (c *voteServiceClient) GetByPollID(ctx context.Context, in *RequestGet, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Vote], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &VoteService_ServiceDesc.Streams[0], VoteService_Get_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &VoteService_ServiceDesc.Streams[0], VoteService_GetByPollID_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (c *voteServiceClient) Get(ctx context.Context, in *RequestGet, opts ...grp
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type VoteService_GetClient = grpc.ServerStreamingClient[Vote]
+type VoteService_GetByPollIDClient = grpc.ServerStreamingClient[Vote]
 
 func (c *voteServiceClient) Update(ctx context.Context, in *RequestUpdate, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -96,7 +96,7 @@ func (c *voteServiceClient) Create(ctx context.Context, in *RequestCreate, opts 
 // All implementations must embed UnimplementedVoteServiceServer
 // for forward compatibility.
 type VoteServiceServer interface {
-	Get(*RequestGet, grpc.ServerStreamingServer[Vote]) error
+	GetByPollID(*RequestGet, grpc.ServerStreamingServer[Vote]) error
 	Update(context.Context, *RequestUpdate) (*Response, error)
 	Delete(context.Context, *RequestDelete) (*Response, error)
 	Create(context.Context, *RequestCreate) (*Response, error)
@@ -110,8 +110,8 @@ type VoteServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedVoteServiceServer struct{}
 
-func (UnimplementedVoteServiceServer) Get(*RequestGet, grpc.ServerStreamingServer[Vote]) error {
-	return status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedVoteServiceServer) GetByPollID(*RequestGet, grpc.ServerStreamingServer[Vote]) error {
+	return status.Errorf(codes.Unimplemented, "method GetByPollID not implemented")
 }
 func (UnimplementedVoteServiceServer) Update(context.Context, *RequestUpdate) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -143,16 +143,16 @@ func RegisterVoteServiceServer(s grpc.ServiceRegistrar, srv VoteServiceServer) {
 	s.RegisterService(&VoteService_ServiceDesc, srv)
 }
 
-func _VoteService_Get_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _VoteService_GetByPollID_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(RequestGet)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(VoteServiceServer).Get(m, &grpc.GenericServerStream[RequestGet, Vote]{ServerStream: stream})
+	return srv.(VoteServiceServer).GetByPollID(m, &grpc.GenericServerStream[RequestGet, Vote]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type VoteService_GetServer = grpc.ServerStreamingServer[Vote]
+type VoteService_GetByPollIDServer = grpc.ServerStreamingServer[Vote]
 
 func _VoteService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestUpdate)
@@ -230,8 +230,8 @@ var VoteService_ServiceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Get",
-			Handler:       _VoteService_Get_Handler,
+			StreamName:    "GetByPollID",
+			Handler:       _VoteService_GetByPollID_Handler,
 			ServerStreams: true,
 		},
 	},

@@ -365,9 +365,9 @@ const file_pkg_api_proto_vote_proto_rawDesc = "" +
 	"\rRequestDelete\x12\x0e\n" +
 	"\x02ID\x18\x01 \x01(\tR\x02ID\"*\n" +
 	"\rRequestCreate\x12\x19\n" +
-	"\x04Vote\x18\x01 \x01(\v2\x05.VoteR\x04Vote2\x99\x01\n" +
-	"\vVoteService\x12\x1b\n" +
-	"\x03Get\x12\v.RequestGet\x1a\x05.Vote0\x01\x12#\n" +
+	"\x04Vote\x18\x01 \x01(\v2\x05.VoteR\x04Vote2\xa1\x01\n" +
+	"\vVoteService\x12#\n" +
+	"\vGetByPollID\x12\v.RequestGet\x1a\x05.Vote0\x01\x12#\n" +
 	"\x06Update\x12\x0e.RequestUpdate\x1a\t.Response\x12#\n" +
 	"\x06Delete\x12\x0e.RequestDelete\x1a\t.Response\x12#\n" +
 	"\x06Create\x12\x0e.RequestCreate\x1a\t.ResponseB\x14Z\x12./pkg/api/protobufb\x06proto3"
@@ -395,11 +395,11 @@ var file_pkg_api_proto_vote_proto_goTypes = []any{
 }
 var file_pkg_api_proto_vote_proto_depIdxs = []int32{
 	0, // 0: RequestCreate.Vote:type_name -> Vote
-	1, // 1: VoteService.Get:input_type -> RequestGet
+	1, // 1: VoteService.GetByPollID:input_type -> RequestGet
 	2, // 2: VoteService.Update:input_type -> RequestUpdate
 	4, // 3: VoteService.Delete:input_type -> RequestDelete
 	5, // 4: VoteService.Create:input_type -> RequestCreate
-	0, // 5: VoteService.Get:output_type -> Vote
+	0, // 5: VoteService.GetByPollID:output_type -> Vote
 	3, // 6: VoteService.Update:output_type -> Response
 	3, // 7: VoteService.Delete:output_type -> Response
 	3, // 8: VoteService.Create:output_type -> Response
