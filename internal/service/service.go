@@ -3,7 +3,7 @@ package service
 import "github.com/Koyo-os/vote-crud-service/internal/entity"
 
 type (
-	Repository interface{
+	Repository interface {
 		Create(vote *entity.Vote) error
 		Update(string, string, interface{}) error
 		Delete(string) error
@@ -11,7 +11,7 @@ type (
 		GetByPollID(string) (chan entity.Vote, error)
 	}
 
-	Service struct{
+	Service struct {
 		repo Repository
 	}
 )
