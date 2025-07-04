@@ -34,7 +34,7 @@ message RequestCreate{
 }
 
 service VoteService{
-    rpc Get (RequestGet) returns (stream Vote);
+    rpc GetByPollID (RequestGet) returns (stream Vote);
     rpc Update (RequestUpdate) returns (Response);
     rpc Delete (RequestDelete) returns (Response);
     rpc Create (RequestCreate) returns (Response);
