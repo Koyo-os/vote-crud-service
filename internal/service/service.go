@@ -1,6 +1,10 @@
 package service
 
-import "github.com/Koyo-os/vote-crud-service/internal/entity"
+import (
+	"context"
+
+	"github.com/Koyo-os/vote-crud-service/internal/entity"
+)
 
 type (
 	Repository interface {
@@ -8,7 +12,8 @@ type (
 		Update(string, string, interface{}) error
 		Delete(string) error
 		Get(string) (*entity.Vote, error)
-		GetBy(string, interface{}) (chan entity.Vote, error)
+		GetBy(string, interface{}) ([]entity.Vote, error)
+		GetByPollID(context.Context, string) (chan entity.Vote, error)
 	}
 
 	Service struct {
@@ -38,6 +43,10 @@ func (s *Service) Get(id string) (*entity.Vote, error) {
 	return s.repo.Get(id)
 }
 
-func (s *Service) GetByPollID(id string) (chan entity.Vote, error) {
-	return s.repo.GetBy("poll_id", id)
+func (s *Service) GetBy(id string, value interface{}) ([]entity.Vote, error) {
+	return s.repo.GetBy(id, value)
+}
+
+func (s *Service) GetByPollID(ctx context.Context, id string) (chan entity.Vote, error) {
+	return s.repo.GetByPollID(ctx, id)
 }
