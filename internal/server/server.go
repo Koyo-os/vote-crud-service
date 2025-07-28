@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"github.com/Koyo-os/vote-crud-service/internal/entity"
 	"github.com/Koyo-os/vote-crud-service/internal/service"
 	"github.com/Koyo-os/vote-crud-service/pkg/api/protobuf"
 	"github.com/Koyo-os/vote-crud-service/pkg/logger"
@@ -48,10 +49,61 @@ func (s *Server) Get(req *protobuf.RequestGet, resp grpc.ServerStreamingServer[p
 }
 
 func (s *Server) Update(ctx context.Context, req *protobuf.RequestUpdate) (*protobuf.Response, error) {
+	if err := s.service.Update(req.ID, req.Key, req.Value); err != nil {
+		s.logger.Error("failed update vote",
+			zap.String("id", req.ID),
+			zap.String("key", req.Key),
+			zap.Error(err))
+
+		return &protobuf.Response{
+			Error: err.Error(),
+			Ok:    false,
+		}, err
+	}
+
+	return &protobuf.Response{
+		Error: "",
+		Ok:    true,
+	}, nil
 }
 
 func (s *Server) Delete(ctx context.Context, req *protobuf.RequestDelete) (*protobuf.Response, error) {
+	if err := s.service.Delete(req.ID); err != nil {
+		s.logger.Error("failed delete vote",
+			zap.String("id", req.ID),
+			zap.Error(err))
+
+		return &protobuf.Response{
+			Error: err.Error(),
+			Ok:    false,
+		}, err
+	}
+
+	return &protobuf.Response{
+		Error: "",
+		Ok:    true,
+	}, nil
 }
 
 func (s *Server) Create(ctx context.Context, req *protobuf.RequestCreate) (*protobuf.Response, error) {
+	vote, err := entity.ToEntityVote(req.Vote)
+	if err != nil{
+		return nil, err
+	}
+	
+	if err = s.service.Create(vote); err != nil {
+		s.logger.Error("failed create vote",
+			zap.String("id", req.Vote.ID),
+			zap.Error(err))
+
+		return &protobuf.Response{
+			Error: err.Error(),
+			Ok:    false,
+		}, err
+	}
+
+	return &protobuf.Response{
+		Error: "",
+		Ok:    true,
+	}, nil
 }
