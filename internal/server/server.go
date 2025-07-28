@@ -26,7 +26,7 @@ func NewServer(service *service.Service, logger *logger.Logger) *Server {
 }
 
 func (s *Server) Get(req *protobuf.RequestGet, resp grpc.ServerStreamingServer[protobuf.Vote]) error {
-	respChan, err := s.service.GetByPollID(req.ID)
+	respChan, err := s.service.GetByPollID(resp.Context(),req.ID)
 	if err != nil {
 		return err
 	}
