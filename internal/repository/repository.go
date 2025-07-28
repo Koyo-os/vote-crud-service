@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -24,7 +25,7 @@ func NewRepository(db *gorm.DB, logger *logger.Logger) *Repository {
 
 func (r *Repository) Create(Vote *entity.Vote) error {
 	if Vote == nil {
-		return errors.New("Vote is nil")
+		return errors.New("vote is nil")
 	}
 	if err := r.db.Create(Vote).Error; err != nil {
 		r.logger.Error("failed to create Vote", zap.Error(err))
@@ -71,6 +72,30 @@ func (r *Repository) Delete(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *Repository) GetByPollID(ctx context.Context,id string) (chan entity.Vote, error) {
+	resp := make(chan entity.Vote, 1)
+
+	go func(ouput chan entity.Vote) {
+		for {
+			select {
+				case <- ctx.Done():
+					return 
+				default:
+					votes, err := r.GetBy("poll_id", id)
+					if err != nil{
+						return
+					}
+
+					for _, v := range votes {
+						resp <- v
+					}
+				}
+		}
+	}(resp)
+
+	return resp, nil
 }
 
 func (r *Repository) GetBy(key string, value interface{}) ([]entity.Vote, error) {
