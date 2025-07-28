@@ -8,7 +8,7 @@ type (
 		Update(string, string, interface{}) error
 		Delete(string) error
 		Get(string) (*entity.Vote, error)
-		GetByPollID(string) (chan entity.Vote, error)
+		GetBy(string, interface{}) (chan entity.Vote, error)
 	}
 
 	Service struct {
@@ -39,5 +39,5 @@ func (s *Service) Get(id string) (*entity.Vote, error) {
 }
 
 func (s *Service) GetByPollID(id string) (chan entity.Vote, error) {
-	return s.repo.GetByPollID(id)
+	return s.repo.GetBy("poll_id", id)
 }
