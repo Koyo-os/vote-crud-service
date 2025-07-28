@@ -7,6 +7,7 @@ import (
 
 	"github.com/Koyo-os/vote-crud-service/internal/config"
 	"github.com/Koyo-os/vote-crud-service/internal/repository"
+	"github.com/Koyo-os/vote-crud-service/internal/server"
 	"github.com/Koyo-os/vote-crud-service/internal/service"
 	"github.com/Koyo-os/vote-crud-service/pkg/api/protobuf"
 	"github.com/Koyo-os/vote-crud-service/pkg/logger"
@@ -38,6 +39,8 @@ func getService(logger *logger.Logger) (*service.Service, error) {
 	repository := repository.NewRepository(db, logger)
 
 	service := service.NewService(repository)
+
+	return service, nil
 }
 
 func main() {
@@ -60,7 +63,16 @@ func main() {
 
 	logger.Info("vote-crud-service starting...")
 
-	server := grpc.NewServer()
+	grpcServer := grpc.NewServer()
 
-	protobuf.RegisterVoteServiceServer(server, )
+	service, err := getService(logger)
+	if err != nil{
+		logger.Error("failed get service", zap.Error(err))
+		
+		return
+	}
+
+	server := server.NewServer(service, logger)
+
+	protobuf.RegisterVoteServiceServer(grpcServer, server)
 }
